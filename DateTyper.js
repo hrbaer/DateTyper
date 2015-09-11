@@ -351,14 +351,12 @@
     
     // Initializes drag and drop.
     dateTyperInput.addEventListener('dragstart', function(evt) {
-      console.log('>>>', evt.screenX, evt.screenY);
       lastPos = { x: evt.screenX, y: evt.screenY };
       dragEnabled = true;
     });
 
     // Changes date component when dragging a field.
     dateTyperInput.addEventListener('drag', function(evt) {
-      console.log('>>>', evt);
       if (dragEnabled && evt.screenX != 0 && evt.screenY != 0) {
         var dy = ((lastPos.y - evt.screenY) / pixelsPerUnit) | 0;
         if (dy != 0) {
