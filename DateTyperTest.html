@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Date Typer Test</title>
+  <style>
+  body {
+    margin: 40px;
+    font-family: "Helvetica Neue", sans-serif;
+    color: #ccc;
+  }
+  .datetyper {
+    font-family: inherit;
+    font-weight: 300;
+    font-size: 22pt;
+    width: 700px;
+    margin-bottom: 16px;
+  }
+  .datetyper:focus {
+    color: #a00;
+  }
+  #result {
+    font-size: 13pt;
+    color: #24a;
+  }
+  </style>
+  <script type="text/javascript" src="DateTyper.js"></script>
+</head>
+<body>
+  
+  <h1>Date Typer Test</h1>
+  <p>
+    Navigate in time by typing, using arrows or drag and drop.
+  </p>
+  
+  <h2>Default Date and Time Display</h2>
+  <input id="default" class="datetyper" type="text"/>
+  
+  <h2>UTC Date and Time Display</h2>
+  <input id="utc" class="datetyper" type="text"/>
+
+  <h2>Localized Date and Time Display</h2>
+  <input id="locale" class="datetyper" type="text"/>
+  
+  <h2>Localized Date Display</h2>
+  <input id="date" class="datetyper" type="text" data-date="0"/>
+
+  <h2>Localized Time Display</h2>
+  <input id="time" class="datetyper" type="text"/>
+  
+  <h3>Current Selection</h3>
+  <pre id="result"></pre>
+
+  <script>
+  
+  function showResult() {
+    document.getElementById('result').textContent = Array.prototype.slice.call(arguments).join(' ');
+  }
+  
+  dateTyper('.datetyper#default').domElement
+    .addEventListener('change', function(evt) { showResult(evt.detail.valueAsDate); });
+  
+  dateTyper('.datetyper#utc', function(date) { return date.toUTCString(); }).domElement
+    .addEventListener('change', function(evt) { showResult(evt.detail.valueAsDate); });
+  
+  dateTyper('.datetyper#locale', function(date) { return date.toLocaleString(); }).domElement
+    .addEventListener('change', function(evt) { showResult(evt.detail.valueAsDate); });
+  
+  dateTyper('.datetyper#date', function(date) { return date.toLocaleDateString(); }).domElement
+    .addEventListener('change', function(evt) { showResult(evt.detail.valueAsDate); });
+  
+  dateTyper('.datetyper#time', function(date) { return date.toLocaleTimeString(); }).domElement
+    .addEventListener('change', function(evt) { showResult(evt.detail.valueAsDate);
+  });
+  
+  </script>
+  
+</body>
+</html>
