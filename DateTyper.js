@@ -371,10 +371,13 @@
     dateTyperInput.addEventListener('drop', function(evt) {
       evt.preventDefault();
     });
-    
-    dateTyper.domElement = dateTyperInput;
 
-    return dateTyper;
+    return {
+      domElement: dateTyperInput,
+      setDate: function(date) {
+        dateTyperInput.value = dateFormatter(date);
+      }
+    };
   }
 
   global.dateTyper = dateTyper;
