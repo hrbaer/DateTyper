@@ -293,13 +293,13 @@
           break;
 
         // Increases the selected date component value.
-        case 38:
+        case 40:
           changeDateComponent(this, +1);
           evt.preventDefault();
           break;
 
         // Decreases the selected date component value.
-        case 40:
+        case 38:
           changeDateComponent(this, -1);
           evt.preventDefault();
           break;
@@ -328,7 +328,7 @@
     // Changes the date component by wheel action.
     dateTyperInput.addEventListener('wheel', function(evt) {
       var delta = evt.deltaX | evt.deltaY;
-      changeDateComponent(this, delta / Math.abs(delta));
+      changeDateComponent(this, -delta / Math.abs(delta));
       evt.preventDefault();
     });
     
@@ -346,7 +346,7 @@
     
     dateTyperInput.addEventListener("touchmove", function(evt) {
       var touch = event.touches[0];
-      var dy = ((lastPos.y - touch.screenY) / pixelsPerUnit) | 0;
+      var dy = ((touch.screenY - lastPos.y) / pixelsPerUnit) | 0;
       if (dy != 0) {
         changeDateComponent(this, dy);
         lastPos.y = touch.screenY;
@@ -363,7 +363,7 @@
     // Changes date component when dragging a field.
     dateTyperInput.addEventListener('drag', function(evt) {
       if (dragEnabled && evt.screenX != 0 && evt.screenY != 0) {
-        var dy = ((lastPos.y - evt.screenY) / pixelsPerUnit) | 0;
+        var dy = ((evt.screenY - lastPos.y) / pixelsPerUnit) | 0;
         if (dy != 0) {
           changeDateComponent(this, dy);
           lastPos.y = evt.screenY;
@@ -380,7 +380,10 @@
     return {
       domElement: dateTyperInput,
       setDate: function(date) {
-        dateTyperInput.value = dateFormatter(date);
+        dateTyperInput.value = dateFormatter(upDate = date);
+      },
+      getDate: function() {
+        return upDate;
       }
     };
   }
