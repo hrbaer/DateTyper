@@ -29,7 +29,7 @@
     var separator = /[\.\-\/:,\s]+/g;
 
     // Object holding the results of the learned date format.
-    var memory = { index: [], months: [] };
+    var memory = { index: [], pos: [], months: [] };
 
     // Number of pixels for one unit.
     var pixelsPerUnit = 5;
@@ -101,7 +101,7 @@
     // Recreates the date string from the current date values.
     function updateDate() {
       upDate = new Date(0);
-      memory.index.forEach(function(v) {
+      memory.pos.forEach(function(v) {
         v.update(upDate, v.value);
       });
       upDate = isNaN(upDate.valueOf()) ? new Date() : upDate;
@@ -157,17 +157,24 @@
             }
             if (field.index >= 0) {
               memory.index.push(field);
+              memory.pos.push(field);
             }
           });
         }
 
       }
 
-      // Actually determines the date components and sorts the results by ascending indices.
+      // Actually determines the date components and creates two arrays:
+      // one by ascending indices and one by ascending positions.
       var test = testFields(testValues1, testValues2, testValues3);
       test(fields);
+
       memory.index.sort(function(a, b) {
         return a.index - b.index;
+      });
+
+      memory.pos.sort(function(a, b) {
+        return a.pos - b.pos;
       });
 
       // Extract the names of the months.
@@ -287,14 +294,12 @@
 
         // Increases the selected date component value.
         case 38:
-        case 53:
           changeDateComponent(this, +1);
           evt.preventDefault();
           break;
 
         // Decreases the selected date component value.
         case 40:
-        case 191:
           changeDateComponent(this, -1);
           evt.preventDefault();
           break;
